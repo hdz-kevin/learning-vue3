@@ -1,0 +1,52 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<div id="app"></div>
+
+<script>
+    const { createApp } = Vue
+
+    // Un componente en Vuejs es un simple objeto de js que sigue una interfaz para definir el html,
+    // la data y acciones del componente
+    const Counter = {
+        template: `
+            <div>
+                Count is: {{ count }}
+                <button v-on:click="increment">Increment</button>
+                <button v-on:click="decrement">Decrement</button>
+            </div>
+        `,
+
+        data() {
+            return {
+                count: 11,
+            }
+        },
+
+        methods: {
+            increment() {
+                this.count++;
+            },
+            decrement() {
+                if (this.count > 0) {
+                    this.count--;
+                }
+            }
+        }
+    }
+
+    // Anidar componentes dentro de otro
+    const App = {
+        template: `
+          <header>Navbar</header>
+          <main>
+            <Counter />
+          </main>
+          <footer>Footer</footer>
+        `,
+    };
+
+    const app = createApp(App)
+    // Registrar el componente dentro del componente principal
+    app.component('Counter', Counter)
+    app.mount('#app')
+</script>
