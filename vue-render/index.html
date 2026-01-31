@@ -8,11 +8,11 @@
     // Un componente en Vuejs es un simple objeto de js que sigue una interfaz para definir el html,
     // la data y acciones del componente
     const Counter = {
-        render(component) {
+        render() {
             return h('div', {}, [
-                `Count is: ${component.count}`,
-                h('button', { onClick: component.increment, }, ['Increment']),
-                h('button', { onClick: component.decrement }, ['Decrement']),
+                `Count is: ${this.count}`,
+                h('button', { onClick: this.increment, }, ['Increment']),
+                h('button', { onClick: this.decrement }, ['Decrement']),
             ]);
         },
 
