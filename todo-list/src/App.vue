@@ -9,11 +9,17 @@ export default {
 
   methods: {
     addTodo() {
-      this.todos = [...this.todos, this.todoTitle];
+      this.todos = [
+        ...this.todos,
+        {
+          title: this.todoTitle,
+          id: Date.now()
+        }
+      ];
     },
 
-    removeTodo(todoTitle) {
-      this.todos = this.todos.filter(todo => todo !== todoTitle);
+    removeTodo(todoId) {
+      this.todos = this.todos.filter(todo => todo.id !== todoId);
     }
   }
 };
@@ -36,10 +42,10 @@ export default {
     </section>
 
     <section>
-      <div v-for="todo in todos" class="todo">
-        <p>{{ todo }}</p>
+      <div v-for="todo in todos" class="todo" :key="todo.id">
+        <p>{{ todo.title }}</p>
         <div>
-          <button @click="removeTodo(todo)" class="remove-todo-btn">&times;</button>
+          <button @click="removeTodo(todo.id)" class="remove-todo-btn">&times;</button>
         </div>
       </div>
     </section>
