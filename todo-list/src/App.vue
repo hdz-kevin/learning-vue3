@@ -1,14 +1,26 @@
 <script>
+import Alert from './components/Alert.vue';
+
 export default {
+  components: {
+    Alert,
+  },
+
   data() {
     return {
       todoTitle: "",
       todos: [],
+      showAlert: false,
     }
   },
 
   methods: {
     addTodo() {
+      if (this.todoTitle.trim() === "") {
+        this.showAlert = true;
+        return;
+      }
+
       this.todos = [
         ...this.todos,
         {
@@ -32,6 +44,12 @@ export default {
   </nav>
 
   <main class="container">
+    <Alert
+      message="Todo title is required"
+      :show="showAlert"
+      @close="showAlert = false"
+    />
+
     <section>
       <form class="add-todo-form">
         <input v-model="todoTitle" type="text" placeholder="Todo Title" />
