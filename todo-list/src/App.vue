@@ -1,6 +1,7 @@
 <script>
 import AddTodoForm from './components/AddTodoForm.vue';
 import Alert from './components/Alert.vue';
+import Todo from './components/Todo.vue';
 import Navbar from './components/Navbar.vue';
 
 export default {
@@ -8,6 +9,7 @@ export default {
     Alert,
     Navbar,
     AddTodoForm,
+    Todo,
   },
 
   data() {
@@ -26,10 +28,7 @@ export default {
 
       this.todos = [
         ...this.todos,
-        {
-          title,
-          id: Date.now()
-        }
+        { title, id: Date.now() }
       ];
     },
 
@@ -55,38 +54,10 @@ export default {
     </section>
 
     <section>
-      <div v-for="todo in todos" class="todo" :key="todo.id">
-        <p>{{ todo.title }}</p>
-        <div>
-          <button @click="removeTodo(todo.id)" class="remove-todo-btn">&times;</button>
-        </div>
-      </div>
+      <Todo
+        :todos
+        @remove="removeTodo"
+      />
     </section>
   </main>
 </template>
-
-<style scoped>
-.todo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--accent-color);
-  margin-top: 20px;
-  padding: 0 20px 0 20px;
-  border-radius: 10px;
-}
-
-.todo p {
-  font-size: 18px;
-}
-
-.remove-todo-btn {
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
-  border: none;
-  font-size: 18px;
-  color: var(--text-color);
-  background: var(--danger-color);
-}
-</style>
