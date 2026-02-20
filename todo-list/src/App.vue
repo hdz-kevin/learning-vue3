@@ -1,22 +1,25 @@
 <script>
+import AddTodoForm from './components/AddTodoForm.vue';
 import Alert from './components/Alert.vue';
+import Navbar from './components/Navbar.vue';
 
 export default {
   components: {
     Alert,
+    Navbar,
+    AddTodoForm,
   },
 
   data() {
     return {
-      todoTitle: "",
       todos: [],
       showAlert: false,
     }
   },
 
   methods: {
-    addTodo() {
-      if (this.todoTitle.trim() === "") {
+    addTodo(title) {
+      if (title.trim() === "") {
         this.showAlert = true;
         return;
       }
@@ -24,7 +27,7 @@ export default {
       this.todos = [
         ...this.todos,
         {
-          title: this.todoTitle,
+          title,
           id: Date.now()
         }
       ];
@@ -38,10 +41,7 @@ export default {
 </script>
 
 <template>
-  <nav class="navbar">
-    <img src="./assets/logo.svg" width="45" />
-    <div class="brand">Todo List App</div>
-  </nav>
+  <Navbar />
 
   <main class="container">
     <Alert
@@ -51,12 +51,7 @@ export default {
     />
 
     <section>
-      <form class="add-todo-form">
-        <input v-model="todoTitle" type="text" placeholder="Todo Title" />
-        <div>
-          <button @click.prevent="addTodo">Add Todo</button>
-        </div>
-      </form>
+      <AddTodoForm @submit="addTodo" />
     </section>
 
     <section>
@@ -71,43 +66,6 @@ export default {
 </template>
 
 <style scoped>
-.navbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--navbar-color);
-  padding: 20px;
-  margin-bottom: 50px;
-}
-
-.brand {
-  font-size: 2rem;
-}
-
-.add-todo-form {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5rem;
-  margin-bottom: 40px;
-}
-
-.add-todo-form input {
-  flex: 1;
-  border: solid 2px var(--accent-color);
-  border-radius: 10px;
-  padding: 15px 10px;
-  font-size: 18px;
-}
-
-.add-todo-form button {
-  background: var(--accent-color);
-  color: var(--text-color);
-  border: none;
-  padding: 15px;
-  border-radius: 10px;
-  font-size: 18px;
-}
-
 .todo {
   display: flex;
   justify-content: space-between;
