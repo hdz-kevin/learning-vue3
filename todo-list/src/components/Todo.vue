@@ -1,10 +1,10 @@
 <script>
   export default {
     props: {
-      todos: {
+      title: {
         required: true,
-        type: Array,
-      }
+        type: String,
+      },
     },
 
     emits: ['remove']
@@ -12,10 +12,10 @@
 </script>
 
 <template>
-  <div v-for="todo in todos" class="todo" :key="todo.id">
-    <p>{{ todo.title }}</p>
+  <div class="todo">
+    <p>{{ title }}</p>
     <div>
-      <button @click="$emit('remove', todo.id)" class="remove-todo-btn">&times;</button>
+      <button @click="$emit('remove')" class="remove-todo-btn">&times;</button>
     </div>
   </div>
 </template>

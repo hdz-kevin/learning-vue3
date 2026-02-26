@@ -32,8 +32,8 @@ export default {
       ];
     },
 
-    removeTodo(todoId) {
-      this.todos = this.todos.filter(todo => todo.id !== todoId);
+    removeTodo(id) {
+      this.todos = this.todos.filter(todo => todo.id !== id);
     }
   }
 };
@@ -55,8 +55,10 @@ export default {
 
     <section>
       <Todo
-        :todos
-        @remove="removeTodo"
+        v-for="todo in todos"
+        :key="todo.id"
+        :title="todo.title"
+        @remove="removeTodo(todo.id)"
       />
     </section>
   </main>
