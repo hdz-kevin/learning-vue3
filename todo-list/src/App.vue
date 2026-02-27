@@ -14,7 +14,7 @@ export default {
 
   data() {
     return {
-      todos: [],
+      todos: [{ id: Date.now(), title: 'Test', }],
       showAlert: false,
     }
   },

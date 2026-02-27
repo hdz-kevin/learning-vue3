@@ -1,21 +1,31 @@
 <script>
-  export default {
-    props: {
-      title: {
-        required: true,
-        type: String,
-      },
-    },
+import Btn from "./Btn.vue";
+import Pencil from "./icons/Pencil.vue";
 
-    emits: ['remove']
-  }
+export default {
+  components: { Btn, Pencil },
+
+  props: {
+    title: {
+      required: true,
+      type: String,
+    },
+  },
+
+  emits: ["remove"],
+};
 </script>
 
 <template>
   <div class="todo">
     <p>{{ title }}</p>
-    <div>
-      <button @click="$emit('remove')" class="remove-todo-btn">&times;</button>
+    <div class="actions">
+      <Btn class="btn" type="secondary" circle @click="$emit('')">
+        <Pencil />
+      </Btn>
+      <Btn class="btn" type="danger" circle @click="$emit('remove')">
+        &times;
+      </Btn>
     </div>
   </div>
 </template>
@@ -35,13 +45,14 @@
   font-size: 18px;
 }
 
-.remove-todo-btn {
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
   height: 35px;
   width: 35px;
-  border-radius: 50%;
-  border: none;
-  font-size: 18px;
-  color: var(--text-color);
-  background: var(--danger-color);
+  font-size: 22px;
 }
 </style>
