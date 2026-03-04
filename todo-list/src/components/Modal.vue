@@ -7,11 +7,37 @@ export default {
       default: false,
     },
   },
+
+  methods: {
+    clickListener(e) {
+      if (e.target === this.$refs.modal) {
+        this.$emit("close");
+      }
+    },
+
+    keyListener(e) {
+      if (e.key === "Escape") {
+        this.$emit("close");
+      }
+    }
+  },
+
+  mounted() {
+    window.addEventListener("click", this.clickListener);
+    window.addEventListener("keydown", this.keyListener);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("click", this.clickListener);
+    window.removeEventListener("keydown", this.keyListener);
+  },
+
+  emits: ["close"],
 }
 </script>
 
 <template>
-  <div v-if="show" class="modal">
+  <div ref="modal" v-show="show" class="modal">
     <div class="modal-content">
       <div class="modal-header">
         <slot name="header" />

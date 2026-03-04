@@ -47,7 +47,6 @@ export default {
     showEditTodoForm(todo) {
       this.editTodoForm.show = true;
       this.editTodoForm.todo = { ...todo };
-      console.log(this.editTodoForm.todo);
     },
 
     updateTodo() {
@@ -68,7 +67,7 @@ export default {
   <Navbar />
 
   <main class="container">
-    <Modal :show="editTodoForm.show">
+    <Modal :show="editTodoForm.show" @close="editTodoForm.show = false">
       <template #header>
         <h2>Edit Todo</h2>
       </template>
