@@ -1,10 +1,11 @@
 <script>
-import AddTodoForm from './components/AddTodoForm.vue';
-import Alert from './components/Alert.vue';
-import Todo from './components/Todo.vue';
-import Navbar from './components/Navbar.vue';
-import Modal from './components/Modal.vue';
-import Btn from './components/Btn.vue';
+import AddTodoForm from "./components/AddTodoForm.vue";
+import Alert from "./components/Alert.vue";
+import Todo from "./components/Todo.vue";
+import Navbar from "./components/Navbar.vue";
+import Modal from "./components/Modal.vue";
+import Btn from "./components/Btn.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -18,30 +19,62 @@ export default {
 
   data() {
     return {
-      todos: [{ id: Date.now(), title: 'Test', }],
-      showAlert: false,
+      todos: [],
+      alert: {
+        show: false,
+        message: "",
+        variant: "success",
+      },
       editTodoForm: {
         show: false,
-        todo: { id: null, title: null }
-      }
-    }
+        todo: { id: null, title: null },
+      },
+    };
+  },
+
+  created() {
+    this.fetchTodos();
   },
 
   methods: {
-    addTodo(title) {
+    async fetchTodos() {
+      try {
+        const res = await axios.get("http://localhost:3000/todos");
+        this.todos = res.data;
+      } catch (e) {
+        this.showAlert(
+          "Failed loading todos, check your internet connection",
+          "danger",
+        );
+      }
+    },
+
+    async addTodo(title) {
       if (title.trim() === "") {
-        this.showAlert = true;
+        this.showAlert("Title cannot be empty", "danger");
         return;
       }
 
-      this.todos = [
-        ...this.todos,
-        { id: Date.now(), title }
-      ];
+      try {
+        const res = await axios.post("http://localhost:3000/todos", { title });
+
+        // this.fetchTodos();
+        // Update UI manually on client side to avoid extra request.
+        // Important: do it if the request is successful
+        this.todos.push(res.data);
+      } catch (e) {
+        this.showAlert(
+          "Failed to add todo, check your internet connection",
+          "danger",
+        );
+      }
     },
 
-    removeTodo(id) {
-      this.todos = this.todos.filter(todo => todo.id !== id);
+    async removeTodo(id) {
+      await axios.delete(`http://localhost:3000/todos/${id}`);
+
+      // Update UI on client side
+      this.todos = this.todos.filter((todo) => todo.id !== id);
     },
 
     showEditTodoForm(todo) {
@@ -55,11 +88,17 @@ export default {
         return;
       }
 
-      const todo = this.todos.find(todo => todo.id == this.editTodoForm.todo.id);
+      const todo = this.todos.find(
+        (todo) => todo.id == this.editTodoForm.todo.id,
+      );
       todo.title = this.editTodoForm.todo.title;
       this.editTodoForm.show = false;
     },
-  }
+
+    showAlert(message, variant = "success") {
+      this.alert = { show: true, message, variant };
+    },
+  },
 };
 </script>
 
@@ -75,7 +114,7 @@ export default {
       <template #body>
         <form class="edit-todo-form">
           <label for="title">Todo Title</label>
-          <input v-model="editTodoForm.todo.title" type="text" id="title">
+          <input v-model="editTodoForm.todo.title" type="text" id="title" />
         </form>
       </template>
 
@@ -86,11 +125,12 @@ export default {
         </div>
       </template>
     </Modal>
-    
+
     <Alert
-      message="Todo title is required"
-      :show="showAlert"
-      @close="showAlert = false"
+      :message="alert.message"
+      :show="alert.show"
+      :variant="alert.variant"
+      @close="alert.show = false"
     />
 
     <section>
