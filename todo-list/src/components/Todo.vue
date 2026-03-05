@@ -20,10 +20,10 @@ export default {
   <div class="todo">
     <p>{{ title }}</p>
     <div class="actions">
-      <Btn class="btn" type="secondary" circle @click="$emit('edit')">
+      <Btn class="btn" variant="secondary" circle @click="$emit('edit')">
         <Pencil />
       </Btn>
-      <Btn class="btn" type="danger" circle @click="$emit('remove')">
+      <Btn class="btn" variant="danger" circle @click="$emit('remove')">
         &times;
       </Btn>
     </div>

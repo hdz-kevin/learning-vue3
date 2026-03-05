@@ -1,13 +1,14 @@
 <script>
 export default {
   props: {
-    type: {
+    variant: {
       required: false,
       type: String,
       default: "success",
 
       validator(value) {
         const options = ["success", "danger", "warning", "info", "secondary"];
+
 				return options.includes(value);
       },
     },
@@ -21,17 +22,14 @@ export default {
 
   computed: {
     backgroundColor() {
-      return `var(--${this.type}-color)`;
+      return `var(--${this.variant}-color)`;
     },
   },
-
-  emits: ["click"],
 };
 </script>
 
 <template>
   <button
-    @click.prevent="$emit('click')"
     :style="{ backgroundColor }"
     :class="{ circle }"
   >

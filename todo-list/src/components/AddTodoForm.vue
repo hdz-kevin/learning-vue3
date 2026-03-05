@@ -20,7 +20,7 @@ import Btn from './Btn.vue';
     <div>
       <Btn
         class="btn"
-        @click="$emit('submit', todoTitle)"
+        @click.prevent="$emit('submit', todoTitle)"
       >
         Add Todo
       </Btn>
