@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar.vue";
 import Modal from "./components/Modal.vue";
 import Btn from "./components/Btn.vue";
 import axios from "axios";
+import Spinner from "./components/Spinner.vue";
 
 export default {
   components: {
@@ -15,11 +16,14 @@ export default {
     Modal,
     Navbar,
     Todo,
+    Spinner,
   },
 
   data() {
     return {
       todos: [],
+      isLoading: false,
+      isPostingTodo: false,
       alert: {
         show: false,
         message: "",
@@ -38,15 +42,14 @@ export default {
 
   methods: {
     async fetchTodos() {
+      this.isLoading = true;
       try {
         const res = await axios.get("http://localhost:3000/todos");
         this.todos = res.data;
       } catch (e) {
-        this.showAlert(
-          "Failed loading todos, check your internet connection",
-          "danger",
-        );
+        this.showAlert("Upps! Something went wrong to load todos", "danger");
       }
+      this.isLoading = false;
     },
 
     async addTodo(title) {
@@ -55,6 +58,7 @@ export default {
         return;
       }
 
+      this.isPostingTodo = true;
       try {
         const res = await axios.post("http://localhost:3000/todos", { title });
 
@@ -68,6 +72,7 @@ export default {
           "danger",
         );
       }
+      this.isPostingTodo = false;
     },
 
     async removeTodo(id) {
@@ -134,17 +139,20 @@ export default {
     />
 
     <section>
-      <AddTodoForm @submit="addTodo" />
+      <AddTodoForm :is-loading="isPostingTodo" @submit="addTodo" />
     </section>
 
     <section>
-      <Todo
-        v-for="todo in todos"
-        :key="todo.id"
-        :title="todo.title"
-        @remove="removeTodo(todo.id)"
-        @edit="showEditTodoForm(todo)"
-      />
+      <Spinner v-if="isLoading" />
+      <div v-else>
+        <Todo
+          v-for="todo in todos"
+          :key="todo.id"
+          :title="todo.title"
+          @remove="removeTodo(todo.id)"
+          @edit="showEditTodoForm(todo)"
+        />
+      </div>
     </section>
   </main>
 </template>

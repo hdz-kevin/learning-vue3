@@ -32,6 +32,7 @@ export default {
   <button
     :style="{ backgroundColor }"
     :class="{ circle }"
+    v-bind="$attrs"
   >
     <slot />
   </button>
@@ -45,6 +46,11 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+button:disabled {
+  opacity: 60%;
+  cursor: default;
 }
 
 .circle {
