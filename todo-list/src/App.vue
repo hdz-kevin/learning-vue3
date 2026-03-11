@@ -44,7 +44,7 @@ export default {
     async fetchTodos() {
       this.isLoading = true;
       try {
-        const res = await axios.get("http://localhost:3000/todos");
+        const res = await axios.get("/api/todos");
         this.todos = res.data;
       } catch (e) {
         this.showAlert("Upps! Something went wrong to load todos", "danger");
@@ -60,7 +60,7 @@ export default {
 
       this.isPostingTodo = true;
       try {
-        const res = await axios.post("http://localhost:3000/todos", { title });
+        const res = await axios.post("/api/todos", { title });
 
         // this.fetchTodos();
         // Update UI manually on client side to avoid extra request.
@@ -76,7 +76,7 @@ export default {
     },
 
     async removeTodo(id) {
-      await axios.delete(`http://localhost:3000/todos/${id}`);
+      await axios.delete(`/api/todos/${id}`);
 
       // Update UI on client side
       this.todos = this.todos.filter((todo) => todo.id !== id);
