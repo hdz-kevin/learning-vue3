@@ -87,16 +87,22 @@ export default {
       this.editTodoForm.todo = { ...todo };
     },
 
-    updateTodo() {
-      if (this.editTodoForm.todo.title.trim() === "") {
-        this.showAlert = true;
+    async updateTodo() {
+      const { id, title } =  this.editTodoForm.todo;
+
+      if (title.trim() === "") {
+        this.showAlert("Title cannot be empty", "danger");
         return;
       }
 
-      const todo = this.todos.find(
-        (todo) => todo.id == this.editTodoForm.todo.id,
-      );
-      todo.title = this.editTodoForm.todo.title;
+      try {
+        await axios.put(`/api/todos/${id}`, { title });
+        // Update on client side
+        this.todos.find((todo) => todo.id == id).title = title;
+      } catch (e) {
+        this.showAlert("Failed to editing todo", "danger");
+      }
+
       this.editTodoForm.show = false;
     },
 
