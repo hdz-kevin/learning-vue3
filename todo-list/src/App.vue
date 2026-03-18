@@ -7,12 +7,14 @@ import Modal from "./components/Modal.vue";
 import Btn from "./components/Btn.vue";
 import axios from "axios";
 import Spinner from "./components/Spinner.vue";
+import EditTodoForm from "./components/EditTodoForm.vue";
 
 export default {
   components: {
     AddTodoForm,
     Alert,
     Btn,
+    EditTodoForm,
     Modal,
     Navbar,
     Todo,
@@ -117,25 +119,12 @@ export default {
   <Navbar />
 
   <main class="container">
-    <Modal :show="editTodoForm.show" @close="editTodoForm.show = false">
-      <template #header>
-        <h2>Edit Todo</h2>
-      </template>
-
-      <template #body>
-        <form class="edit-todo-form">
-          <label for="title">Todo Title</label>
-          <input v-model="editTodoForm.todo.title" type="text" id="title" />
-        </form>
-      </template>
-
-      <template #footer>
-        <div class="edit-todo-modal-footer">
-          <Btn @click="updateTodo">Submit</Btn>
-          <Btn variant="danger" @click="editTodoForm.show = false">Close</Btn>
-        </div>
-      </template>
-    </Modal>
+    <EditTodoForm
+      :show="editTodoForm.show"
+      v-model="editTodoForm.todo.title"
+      @close="editTodoForm.show = false"
+      @submit="updateTodo"
+    />
 
     <Alert
       :message="alert.message"
@@ -162,19 +151,3 @@ export default {
     </section>
   </main>
 </template>
-
-<style scoped>
-.edit-todo-form > input {
-  width: 100%;
-  border: 1px solid var(--accent-color);
-  padding: 10px 0;
-  margin-top: 4px;
-}
-
-.edit-todo-modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 15px;
-}
-</style>
