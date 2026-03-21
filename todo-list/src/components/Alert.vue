@@ -1,28 +1,40 @@
-<script>
-import { BackgroundColor } from './mixins/BackgroundColor';
+<script setup>
+import { computed } from "vue";
 
-export default {
-  mixins: [BackgroundColor],
-  
-  props: {
-    message: {
-      required: true,
-      type: String,
-    },
-    show: {
-      required: true,
-      type: Boolean,
+const props = defineProps({
+  variant: {
+    required: false,
+    type: String,
+    default: "success",
+    validator(value) {
+      const options = ["success", "danger", "warning", "info", "secondary"];
+
+      return options.includes(value);
     },
   },
+  message: {
+    required: true,
+    type: String,
+  },
+  show: {
+    required: true,
+    type: Boolean,
+  },
+});
 
-  emits: ['close'],
-};
+const emit = defineEmits(["close"]);
+
+const backgroundColor = computed(() => `var(--${props.variant}-color)`);
+
+function close() {
+  emit("close");
+}
 </script>
 
 <template>
   <div v-if="show" class="alert" :style="{ backgroundColor }">
     <div>{{ message }}</div>
-    <button @click="$emit('close')" class="close-alert">&times;</button>
+    <button @click="close" class="close-alert">&times;</button>
   </div>
 </template>
 
