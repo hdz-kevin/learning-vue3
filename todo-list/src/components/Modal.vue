@@ -1,39 +1,39 @@
-<script>
-export default {
-  props: {
-    show: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
+<script setup>
+import { onBeforeUnmount, onMounted, useTemplateRef } from "vue";
+
+defineProps({
+  show: {
+    required: false,
+    type: Boolean,
+    default: false,
   },
+});
 
-  methods: {
-    clickListener(e) {
-      if (e.target === this.$refs.modal) {
-        this.$emit("close");
-      }
-    },
+const modal = useTemplateRef("modal");
 
-    keyListener(e) {
-      if (e.key === "Escape") {
-        this.$emit("close");
-      }
-    }
-  },
+const emit = defineEmits(["close"]);
 
-  mounted() {
-    window.addEventListener("click", this.clickListener);
-    window.addEventListener("keydown", this.keyListener);
-  },
-
-  beforeUnmount() {
-    window.removeEventListener("click", this.clickListener);
-    window.removeEventListener("keydown", this.keyListener);
-  },
-
-  emits: ["close"],
+function clickListener(e) {
+  if (e.target === modal.value) {
+    emit("close");
+  }
 }
+
+function keyListener(e) {
+  if (e.key === "Escape") {
+    emit("close");
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("click", clickListener);
+  window.addEventListener("keydown", keyListener);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("click", clickListener);
+  window.removeEventListener("keydown", keyListener);
+});
 </script>
 
 <template>
@@ -76,7 +76,9 @@ export default {
   padding: 0;
   width: 60%;
   max-width: 800px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;

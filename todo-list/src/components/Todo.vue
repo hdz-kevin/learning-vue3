@@ -1,19 +1,15 @@
-<script>
+<script setup>
 import Btn from "./Btn.vue";
 import Pencil from "./icons/Pencil.vue";
 
-export default {
-  components: { Btn, Pencil },
-
-  props: {
-    title: {
-      required: true,
-      type: String,
-    },
+defineProps({
+  title: {
+    required: true,
+    type: String,
   },
+});
 
-  emits: ["remove", "edit"],
-};
+defineEmits(["remove", "edit"]);
 </script>
 
 <template>

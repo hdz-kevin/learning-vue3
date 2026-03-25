@@ -1,25 +1,29 @@
-<script>
-import { BackgroundColor } from './mixins/BackgroundColor';
+<script setup>
+import { computed } from "vue";
 
-export default {
-  mixins: [BackgroundColor],
+const props = defineProps({
+  variant: {
+    required: false,
+    type: String,
+    default: "success",
+    validator(value) {
+      const options = ["success", "danger", "warning", "info", "secondary"];
 
-  props: {
-    circle: {
-      required: false,
-      type: Boolean,
-      default: false,
+      return options.includes(value);
     },
   },
-};
+  circle: {
+    required: false,
+    type: Boolean,
+    default: false,
+  },
+});
+
+const backgroundColor = computed(() => `var(--${props.variant}-color)`);
 </script>
 
 <template>
-  <button
-    :style="{ backgroundColor }"
-    :class="{ circle }"
-    v-bind="$attrs"
-  >
+  <button :style="{ backgroundColor }" :class="{ circle }" v-bind="$attrs">
     <slot />
   </button>
 </template>

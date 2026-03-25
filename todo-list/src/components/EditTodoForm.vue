@@ -1,17 +1,10 @@
-<script>
+<script setup>
 import Modal from "./Modal.vue";
 import Btn from "./Btn.vue";
 
-export default {
-  components: {
-    Modal,
-    Btn,
-  },
+defineProps(["modelValue", "show"]);
 
-  props: ["modelValue", "show"],
-
-  emits: ["submit", "close", "update:modelValue"],
-};
+defineEmits(["submit", "close", "update:modelValue"]);
 </script>
 
 <template>
