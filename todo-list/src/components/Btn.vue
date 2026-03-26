@@ -1,17 +1,8 @@
 <script setup>
-import { computed } from "vue";
+import { useBackgroundColor, backgroundColorProps } from "./composables/backgroundColor";
 
 const props = defineProps({
-  variant: {
-    required: false,
-    type: String,
-    default: "success",
-    validator(value) {
-      const options = ["success", "danger", "warning", "info", "secondary"];
-
-      return options.includes(value);
-    },
-  },
+  ...backgroundColorProps,
   circle: {
     required: false,
     type: Boolean,
@@ -19,7 +10,7 @@ const props = defineProps({
   },
 });
 
-const backgroundColor = computed(() => `var(--${props.variant}-color)`);
+const backgroundColor = useBackgroundColor(props);
 </script>
 
 <template>
