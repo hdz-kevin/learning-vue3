@@ -7,9 +7,8 @@ import axios from "axios";
 import Spinner from "./components/Spinner.vue";
 import EditTodoForm from "./components/EditTodoForm.vue";
 import { reactive, ref } from "vue";
+import { useFetch } from "./components/composables/fetch";
 
-const todos = ref([]);
-const isLoading = ref(false);
 const isPostingTodo = ref(false);
 const alert = reactive({
   show: false,
@@ -22,7 +21,9 @@ const editTodoForm = reactive({
 });
 
 // Fetch todos from API
-fetchTodos();
+const { data: todos, isLoading } = useFetch("/api/todos", {
+  onError: () => showAlert("Upps! Failed to load todos", "danger"),
+});
 
 function showAlert(message, variant = "success") {
   alert.show = true;
@@ -35,17 +36,6 @@ function showEditTodoForm(todo) {
   editTodoForm.todo = { ...todo };
 }
 
-async function fetchTodos() {
-  isLoading.value = true;
-  try {
-    const res = await axios.get("/api/todos");
-    todos.value = res.data;
-  } catch (e) {
-    showAlert("Upps! Something went wrong to load todos", "danger");
-  }
-  isLoading.value = false;
-}
-
 async function addTodo(title) {
   if (title.trim() === "") {
     showAlert("Title cannot be empty", "danger");
@@ -56,7 +46,6 @@ async function addTodo(title) {
   try {
     const res = await axios.post("/api/todos", { title });
 
-    // this.fetchTodos();
     // Update UI manually on client side to avoid extra request.
     // Important: do it if the request is successful
     todos.value.push(res.data);
@@ -105,8 +94,8 @@ async function updateTodo() {
     />
 
     <Alert
-      :message="alert.message"
       :show="alert.show"
+      :message="alert.message"
       :variant="alert.variant"
       @close="alert.show = false"
     />
