@@ -25,3 +25,9 @@ html {
   max-width: 1300px;
   margin: 0 auto;
 }
+
+.container-xl {
+  width: 95%;
+  max-width: 1600px;
+  margin: 0 auto;
+}

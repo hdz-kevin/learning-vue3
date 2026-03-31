@@ -1,5 +1,5 @@
 <script setup>
-import { useBackgroundColor, backgroundColorProps } from "./composables/backgroundColor";
+import { useBackgroundColor, backgroundColorProps } from "../composables/backgroundColor";
 
 const props = defineProps({
   ...backgroundColorProps,
