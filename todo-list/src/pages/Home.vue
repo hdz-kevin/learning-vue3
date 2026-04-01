@@ -4,7 +4,6 @@ import Alert from "@/components/Alert.vue";
 import Todo from "@/components/Todo.vue";
 import axios from "axios";
 import Spinner from "@/components/Spinner.vue";
-import EditTodoForm from "@/components/EditTodoForm.vue";
 import { reactive, ref } from "vue";
 import { useFetch } from "@/composables/fetch";
 
@@ -13,10 +12,6 @@ const alert = reactive({
   show: false,
   message: "",
   variant: "success",
-});
-const editTodoForm = reactive({
-  show: false,
-  todo: { id: null, title: null },
 });
 
 // Fetch todos from API
@@ -28,11 +23,6 @@ function showAlert(message, variant = "success") {
   alert.show = true;
   alert.message = message;
   alert.variant = variant;
-}
-
-function showEditTodoForm(todo) {
-  editTodoForm.show = true;
-  editTodoForm.todo = { ...todo };
 }
 
 async function addTodo(title) {
@@ -61,34 +51,9 @@ async function removeTodo(id) {
   todos.value = todos.value.filter((todo) => todo.id !== id);
 }
 
-async function updateTodo() {
-  const { id, title } = editTodoForm.todo;
-
-  if (title.trim() === "") {
-    showAlert("Title cannot be empty", "danger");
-    return;
-  }
-
-  try {
-    await axios.put(`/api/todos/${id}`, { title });
-    // Update on client side
-    todos.value.find((todo) => todo.id == id).title = title;
-  } catch (e) {
-    showAlert("Failed to editing todo", "danger");
-  }
-
-  editTodoForm.show = false;
-}
 </script>
 
 <template>
-    <EditTodoForm
-      :show="editTodoForm.show"
-      v-model="editTodoForm.todo.title"
-      @close="editTodoForm.show = false"
-      @submit="updateTodo"
-    />
-
     <Alert
       :show="alert.show"
       :message="alert.message"
@@ -108,7 +73,7 @@ async function updateTodo() {
           :key="todo.id"
           :title="todo.title"
           @remove="removeTodo(todo.id)"
-          @edit="showEditTodoForm(todo)"
+          @edit="$router.push(`/todos/${todo.id}/edit`)"
         />
       </div>
     </section>

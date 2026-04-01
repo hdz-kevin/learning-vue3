@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
+import EditTodo from "./pages/EditTodo.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -9,6 +10,12 @@ const router = createRouter({
             path: "/",
             name: "Home",
             component: Home,
+        },
+        {
+            path: "/todos/:id/edit",
+            name: "Edit Todo",
+            component: EditTodo,
+            props: true,
         },
         {
             path: "/about",

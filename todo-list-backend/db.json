@@ -1,4 +1,9 @@
 {
-  "todos": [],
+  "todos": [
+    {
+      "title": "Entrenamiento Box",
+      "id": "b59c"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
