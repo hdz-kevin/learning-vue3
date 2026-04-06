@@ -1,20 +1,17 @@
 <script setup>
+import axios from "axios";
+import { ref } from "vue";
 import Alert from "@/components/Alert.vue";
 import Spinner from "@/components/Spinner.vue";
 import TodoForm from "@/components/TodoForm.vue";
-import { useFetch } from "@/composables/fetch";
-import axios from "axios";
-import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useFetch } from "@/composables/fetch";
+import { useAlert } from "@/composables/useAlert";
 
 const props = defineProps({ id: String });
 const isUpdating = ref(false);
-const alert = reactive({
-  show: false,
-  message: "",
-  variant: "danger",
-});
 
+const { alert, showAlert } = useAlert();
 const router = useRouter();
 
 const { data: todo, isLoading: isFetching } = useFetch(`/api/todos/${props.id}`, {
@@ -49,12 +46,6 @@ async function update({ title, description, due_date }) {
     showAlert("Failed to editing todo", "danger");
   }
   isUpdating.value = false;
-}
-
-function showAlert(message, variant = "success") {
-  alert.show = true;
-  alert.message = message;
-  alert.variant = variant;
 }
 </script>
 

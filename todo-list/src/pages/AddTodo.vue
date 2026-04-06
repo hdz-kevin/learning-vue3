@@ -1,17 +1,14 @@
 <script setup>
 import Alert from '@/components/Alert.vue';
 import TodoForm from '@/components/TodoForm.vue';
+import { useAlert } from '@/composables/useAlert';
 import axios from 'axios';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const isPosting = ref(false)
-const alert = reactive({
-  show: false,
-  message: "",
-  variant: "danger",
-});
 
+const { alert, showAlert } = useAlert();
 const router = useRouter();
 
 async function post({ title, description, due_date }) {
@@ -42,12 +39,6 @@ async function post({ title, description, due_date }) {
     console.log(error);
   }
   isPosting.value = false;
-}
-
-function showAlert(message, variant = "success") {
-  alert.show = true;
-  alert.message = message;
-  alert.variant = variant;
 }
 
 </script>
