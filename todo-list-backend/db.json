@@ -1,8 +1,10 @@
 {
   "todos": [
     {
+      "id": "b59c",
       "title": "Entrenamiento Box",
-      "id": "b59c"
+      "description": "Todo description",
+      "due_date": "2026-06-21"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

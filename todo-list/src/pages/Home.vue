@@ -1,5 +1,4 @@
 <script setup>
-import AddTodoForm from "@/components/AddTodoForm.vue";
 import Alert from "@/components/Alert.vue";
 import Todo from "@/components/Todo.vue";
 import axios from "axios";
@@ -62,16 +61,14 @@ async function removeTodo(id) {
     />
 
     <section>
-      <AddTodoForm :is-loading="isPostingTodo" @submit="addTodo" />
-    </section>
-
-    <section>
       <Spinner v-if="isLoading" />
       <div v-else>
         <Todo
           v-for="todo in todos"
           :key="todo.id"
           :title="todo.title"
+          :description="todo.description"
+          :due_date="todo.due_date"
           @remove="removeTodo(todo.id)"
           @edit="$router.push(`/todos/${todo.id}/edit`)"
         />

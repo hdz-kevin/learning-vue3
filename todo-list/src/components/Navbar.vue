@@ -8,6 +8,7 @@
 
     <div class="links">
       <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/todos/create">Add Todo</RouterLink>
       <RouterLink to="/about">About</RouterLink>
     </div>
   </nav>

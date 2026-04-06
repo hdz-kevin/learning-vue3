@@ -2,8 +2,13 @@
 import Btn from "./Btn.vue";
 import Pencil from "./icons/Pencil.vue";
 
-defineProps({
+const props = defineProps({
   title: {
+    required: true,
+    type: String,
+  },
+  description: String,
+  due_date: {
     required: true,
     type: String,
   },
@@ -15,6 +20,9 @@ defineEmits(["remove", "edit"]);
 <template>
   <div class="todo">
     <p>{{ title }}</p>
+    <!-- Todo: Color mas tenue u opaco para todos sin descripcion -->
+    <p>{{ description ?? "Sin description" }}</p>
+    <p>{{ due_date }}</p>
     <div class="actions">
       <Btn class="btn" variant="secondary" circle @click="$emit('edit')">
         <Pencil />
